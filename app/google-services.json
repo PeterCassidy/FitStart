@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "528143830442",
+    "firebase_url": "https://fitstart-748cb.firebaseio.com",
+    "project_id": "fitstart-748cb",
+    "storage_bucket": "fitstart-748cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528143830442:android:4a011a86cf6058b8",
+        "android_client_info": {
+          "package_name": "csp15cap.fitstart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528143830442-rfol0g1o7hcje2spqg64hq0sngl7cgm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "csp15cap.fitstart",
+            "certificate_hash": "69a0e9e375817e5ce25c774d4459184e23ed84d4"
+          }
+        },
+        {
+          "client_id": "528143830442-g2vu2ifg1n4pr98dgkvhicpk4raefun8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiVqyx-u9hyHnjBxH3NITAgfjbw8kVGtU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528143830442-g2vu2ifg1n4pr98dgkvhicpk4raefun8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
