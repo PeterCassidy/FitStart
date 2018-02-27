@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FitStart.iml" filepath="$PROJECT_DIR$/FitStart.iml" />
+      <module fileurl="file://C:\AndroidProjects\FitStart\FitStart.iml" filepath="C:\AndroidProjects\FitStart\FitStart.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\AndroidProjects\FitStart\app\app.iml" filepath="C:\AndroidProjects\FitStart\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -3,19 +3,28 @@
 
     <item
         android:id="@+id/nav_home"
-        android:title="Home"/>
+        android:title="Home"
+        android:icon="@drawable/ic_home"/>
 
     <item
         android:id="@+id/nav_meals"
-        android:title="Meals"/>
+        android:icon="@drawable/ic_food"
+        android:title="Meals" />
 
     <item
         android:id="@+id/nav_exercise"
-        android:title="Exercises"/>
+        android:icon="@drawable/ic_run"
+        android:title="Exercises" />
+
+    <item
+        android:id="@+id/nav_friends"
+        android:icon="@drawable/ic_contacts"
+        android:title="Exercises" />
 
     <item
         android:id="@+id/nav_logout"
-        android:title="Log Out"/>
+        android:icon="@drawable/ic_logout"
+        android:title="Log Out" />
 
 
 </menu>
