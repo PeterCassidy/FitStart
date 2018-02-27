@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private Button tempLogOutBtn;
     private TextView tempTextView;
 
+    private TextView navHeaderUsername;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView = findViewById(R.id.nav_view_main);
         navigationView.inflateHeaderView(R.layout.nav_header);
+        View header = navigationView.getHeaderView(0);
+
+
+        navHeaderUsername = header.findViewById(R.id.nav_username);
+
+
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -62,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -141,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     String name = dataSnapshot.child("user_name").getValue().toString();
 
                     tempTextView.setText("Hello " + name + ", this is a placeholder main activity");
-
+                    navHeaderUsername.setText(name);
 
                 }
 

@@ -34,7 +34,7 @@
                     android:id="@+id/textViewMain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Temporary main activty," />
+                    android:text="Temporary main activity," />
 
                 <Button
                     android:id="@+id/main_logout"
