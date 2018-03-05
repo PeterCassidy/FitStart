@@ -79,15 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        tempLogOutBtn = findViewById(R.id.main_logout);
         tempTextView = findViewById(R.id.textViewMain);
 
-        tempLogOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LogUserOut();
-            }
-        });
 
     }
 
