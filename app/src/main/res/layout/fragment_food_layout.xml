@@ -22,7 +22,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="126dp"
-        android:text="Exercise" />
+        android:text="Home" />
 
     <Button
         android:id="@+id/btn_exercise"
@@ -31,7 +31,7 @@
         android:layout_alignStart="@+id/btn_exercise"
         android:layout_below="@+id/btn_exercise"
         android:layout_marginTop="26dp"
-        android:text="Food" />
+        android:text="Exercise" />
 
 
 </LinearLayout>
