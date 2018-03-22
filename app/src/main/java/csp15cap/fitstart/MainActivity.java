@@ -143,8 +143,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
         drawerLayout.closeDrawer(3);
-        mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("Home").commit();
-
+        if(fragment!=null) {
+            mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("Home").commit();
+        }
 
     }
 
