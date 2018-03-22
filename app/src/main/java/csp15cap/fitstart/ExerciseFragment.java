@@ -22,6 +22,9 @@ public class ExerciseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exercise_layout, container, false);
 
+        //set action bar title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Exercise");
+
         btnHomeFrag = view.findViewById(R.id.btn_home);
         btnFoodFrag = view.findViewById(R.id.btn_food);
 

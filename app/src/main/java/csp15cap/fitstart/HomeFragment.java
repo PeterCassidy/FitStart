@@ -3,6 +3,7 @@ package csp15cap.fitstart;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_layout, container, false);
+        //set action bar title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
         btnExerciseFrag = view.findViewById(R.id.btn_exercise);
         btnFoodFrag = view.findViewById(R.id.btn_food);

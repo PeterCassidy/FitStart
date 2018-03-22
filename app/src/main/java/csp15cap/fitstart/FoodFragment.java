@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by Peter Cassidy on 15/03/2018.
  */
@@ -17,10 +20,13 @@ public class FoodFragment extends Fragment {
     private Button btnExerciseFrag;
     private Button btnHomeFrag;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_layout, container, false);
+        //set action bar title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Meals");
 
         btnExerciseFrag = view.findViewById(R.id.btn_exercise);
         btnHomeFrag = view.findViewById(R.id.btn_home);
@@ -41,6 +47,7 @@ public class FoodFragment extends Fragment {
                 //((MainActivity)getActivity()).setViewPager(0);
             }
         });
+
 
         return view;
 

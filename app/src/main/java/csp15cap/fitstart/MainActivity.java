@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
-    private TextView tempTextView;
 
     private TextView navHeaderUsername;
 
@@ -78,10 +77,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
 
 
-
-
-
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -95,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -106,31 +100,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void NavMenuSelected(MenuItem item) {
-        Fragment fragment = new HomeFragment();
+        Fragment fragment = null;
         FragmentManager mFragManager = getSupportFragmentManager();
         switch(item.getItemId()){
             case R.id.nav_home:
+                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragment = new HomeFragment();
                 Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
                 break;
 
-
             case R.id.nav_friends:
+                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FriendsFragment();
                 Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_meals:
+                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FoodFragment();
                 Toast.makeText(this, "Meals selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_exercise:
-
+                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ExerciseFragment();
                 Toast.makeText(this, "Exercise selected", Toast.LENGTH_SHORT).show();
                 break;
 
+            case R.id.nav_profile:
+                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragment = new ProfileFragment();
+                Toast.makeText(this, "Profile Settings selected", Toast.LENGTH_SHORT).show();
+                break;
+
             case R.id.nav_logout:
+
                 Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
                 LogUserOut();
                 break;
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         drawerLayout.closeDrawer(3);
-        mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("Home").commit();
 
 
     }
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void sendUserToLoginActivity() {
+    public void sendUserToLoginActivity() {
         Intent loginIntent = new Intent (MainActivity.this, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);

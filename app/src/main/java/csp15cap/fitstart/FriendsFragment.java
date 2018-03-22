@@ -22,6 +22,9 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //set action bar title
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Friends");
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }
