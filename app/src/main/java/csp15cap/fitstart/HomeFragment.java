@@ -33,7 +33,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Exercise fragment...", Toast.LENGTH_SHORT).show();
-                ((MainActivity)getActivity()).setViewPager(1);            }
+                //((MainActivity)getActivity()).setViewPager(1);
+            }
         });
 
 
@@ -41,7 +42,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Food fragment...", Toast.LENGTH_SHORT).show();
-                ((MainActivity)getActivity()).setViewPager(2);
+                //((MainActivity)getActivity()).setViewPager(2);
             }
         });
 

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -42,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView navHeaderUsername;
 
-    private PagesStatePagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
 
 
 
@@ -67,11 +67,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         navHeaderUsername = header.findViewById(R.id.nav_username);
+        //set up fragment
+        if(findViewById(R.id.fragment_container) !=null){
+            if(savedInstanceState != null){
+                return;
+            }
+        }
 
-        mPagerAdapter = new PagesStatePagerAdapter(getSupportFragmentManager());
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
 
-        mViewPager = findViewById(R.id.fragment_container);
-        setupViewPager(mViewPager);
 
 
 
@@ -85,22 +90,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         mAuth = FirebaseAuth.getInstance();
 
-        //tempTextView = findViewById(R.id.textViewMain);
-
-
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        PagesStatePagerAdapter adapter = new PagesStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new ExerciseFragment(), "Exercise");
-        adapter.addFragment(new FoodFragment(), "Food");
-        viewPager.setAdapter(adapter);
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,31 +106,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void NavMenuSelected(MenuItem item) {
+        Fragment fragment = new HomeFragment();
+        FragmentManager mFragManager = getSupportFragmentManager();
         switch(item.getItemId()){
             case R.id.nav_home:
-                setViewPager(0);
-                drawerLayout.closeDrawer(3);
-
                 Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
                 break;
 
 
             case R.id.nav_friends:
+                fragment = new FriendsFragment();
                 Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_meals:
-
-                setViewPager(2);
-                drawerLayout.closeDrawer(3);
-
+                fragment = new FoodFragment();
                 Toast.makeText(this, "Meals selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_exercise:
 
-                setViewPager(1);
-                drawerLayout.closeDrawer(3);
+                fragment = new ExerciseFragment();
                 Toast.makeText(this, "Exercise selected", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -148,6 +138,10 @@ public class MainActivity extends AppCompatActivity {
             default:
 
         }
+        drawerLayout.closeDrawer(3);
+        mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+
+
     }
 
 
@@ -155,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setViewPager(0);
 
         //if no user logged in sent to login activity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -170,10 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String name = dataSnapshot.child("user_name").getValue().toString();
-
-               //     tempTextView.setText("Hello " + name + ", this is a placeholder main activity");
                     navHeaderUsername.setText(name);
-
                 }
 
                 @Override
@@ -191,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setViewPager(int fragmentNumber){
-        mViewPager.setCurrentItem(fragmentNumber);
-    }
 
     private void LogUserOut() {
         mAuth.signOut();
