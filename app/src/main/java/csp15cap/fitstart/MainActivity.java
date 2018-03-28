@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,10 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
-
     private TextView navHeaderUsername;
-
-
+    private ImageView navHeaderProfileImage;
 
 
     @Override
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Home");
 
         drawerLayout = findViewById(R.id.drawer_layout_main);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this,drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,9 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         navHeaderUsername = header.findViewById(R.id.nav_username);
+        navHeaderProfileImage = header.findViewById(R.id.nav_profile_pic);
         //set up fragment
-        if(findViewById(R.id.fragment_container) !=null){
-            if(savedInstanceState != null){
+        if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState != null) {
                 return;
             }
         }
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -102,33 +102,33 @@ public class MainActivity extends AppCompatActivity {
     private void NavMenuSelected(MenuItem item) {
         Fragment fragment = null;
         FragmentManager mFragManager = getSupportFragmentManager();
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_home:
-                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new HomeFragment();
                 Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_friends:
-                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FriendsFragment();
                 Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_meals:
-                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FoodFragment();
                 Toast.makeText(this, "Meals selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_exercise:
-                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ExerciseFragment();
                 Toast.makeText(this, "Exercise selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_profile:
-                getSupportFragmentManager().popBackStack("Home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ProfileFragment();
                 Toast.makeText(this, "Profile Settings selected", Toast.LENGTH_SHORT).show();
                 break;
@@ -143,32 +143,39 @@ public class MainActivity extends AppCompatActivity {
 
         }
         drawerLayout.closeDrawer(3);
-        if(fragment!=null) {
+        if (fragment != null) {
             mFragManager.beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack("Home").commit();
         }
 
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
 
+        mAuth = FirebaseAuth.getInstance();
         //if no user logged in sent to login activity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             sendUserToLoginActivity();
-        }else{
+        } else {
             //temp implementation to test DB access
             String CurrentUUID = mAuth.getCurrentUser().getUid();
             mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUUID);
             mDbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String name = dataSnapshot.child("user_name").getValue().toString();
-                    navHeaderUsername.setText(name);
+                    if (dataSnapshot.exists()) {
+                        String name = dataSnapshot.child("user_name").getValue().toString();
+                        String imageURL = "google";
+                        if(dataSnapshot.child("profile_image").exists()) {
+                             imageURL = dataSnapshot.child("profile_image").getValue().toString();
+                        }
+                        navHeaderUsername.setText(name);
+                        Picasso.get().load(imageURL).placeholder(R.drawable.common_google_signin_btn_icon_light).into(navHeaderProfileImage);
+                    }
+
                 }
 
                 @Override
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendUserToLoginActivity() {
-        Intent loginIntent = new Intent (MainActivity.this, LoginActivity.class);
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
 
@@ -190,5 +197,10 @@ public class MainActivity extends AppCompatActivity {
     private void LogUserOut() {
         mAuth.signOut();
         sendUserToLoginActivity();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

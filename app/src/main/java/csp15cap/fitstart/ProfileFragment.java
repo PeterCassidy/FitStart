@@ -1,6 +1,9 @@
 package csp15cap.fitstart;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -30,9 +42,12 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileFragment extends Fragment {
 
     private EditText editTextUsername, editTextCurrentWeight;
+    private ImageView imageViewProfilePic;
     private Button btnSaveChanges;
     private FirebaseAuth mAuth;
     private DatabaseReference mDbRef;
+    private StorageReference userImageRef;
+    final static int Gallery_Pick = 1;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -49,8 +64,10 @@ public class ProfileFragment extends Fragment {
         editTextUsername = view.findViewById(R.id.edittext_settings_name);
         editTextCurrentWeight = view.findViewById(R.id.edittext_settings_current_weight);
         btnSaveChanges = view.findViewById(R.id.btn_settings_save);
+        imageViewProfilePic = view.findViewById(R.id.imageview_settings_profile_pic);
 
         mAuth = FirebaseAuth.getInstance();
+        userImageRef = FirebaseStorage.getInstance().getReference().child("profile_images");
         //if no user logged in sent to login activity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
@@ -69,6 +86,11 @@ public class ProfileFragment extends Fragment {
                     if (dataSnapshot.child("weight").exists()) {
                         String weight = dataSnapshot.child("weight").getValue().toString();
                         editTextCurrentWeight.setText(weight);
+                    }
+                    if(dataSnapshot.child("profile_image").exists()){
+                        String url = dataSnapshot.child("profile_image").getValue().toString();
+                        Picasso.get().load(url).placeholder(R.drawable.common_google_signin_btn_icon_light).into(imageViewProfilePic);
+
                     }
 
                 }
@@ -90,9 +112,68 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        imageViewProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, Gallery_Pick);
+
+            }
+        });
         // Inflate the layout for this fragment
         return view;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==Gallery_Pick && resultCode== Activity.RESULT_OK && data !=null){
+            Uri imageUri = data.getData();
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(getContext(),this);
+
+        }
+
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if(resultCode==RESULT_OK){
+
+                Uri resultUri = result.getUri();
+
+                StorageReference filePath = userImageRef.child(mAuth.getCurrentUser().getUid());
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getActivity(), "Profile image saved.", Toast.LENGTH_SHORT).show();
+                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+                            mDbRef.child("profile_image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getActivity(),"Profile image added to DB",Toast.LENGTH_SHORT).show();
+
+                                    }else{
+                                        String message = task.getException().getMessage();
+                                        Toast.makeText(getActivity(),"error:"+message,Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }else{
+                            Toast.makeText(getActivity(),"error",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }
     }
 
     private void SaveChanges(final String name, String weight) {
