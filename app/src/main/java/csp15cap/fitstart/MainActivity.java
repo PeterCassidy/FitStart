@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         String name = dataSnapshot.child("user_name").getValue().toString();
-                        String imageURL = "google";
+                        String imageURL = "placeholder";
                         if(dataSnapshot.child("profile_image").exists()) {
                              imageURL = dataSnapshot.child("profile_image").getValue().toString();
                         }
