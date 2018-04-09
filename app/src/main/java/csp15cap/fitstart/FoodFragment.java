@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,9 +39,18 @@ public class FoodFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mDbRef; //ref to users>uid>foodentries>
 
+    private TextView tvDate;
+    private Button btnPrevDay, btnNextDay;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    //set date formats
+    Calendar c = Calendar.getInstance();
+    SimpleDateFormat DbDateFormat = new SimpleDateFormat("ddMMyyyy");
+    SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    String selectedDate = null;
 
     @Nullable
     @Override
@@ -53,6 +64,10 @@ public class FoodFragment extends Fragment {
         mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid).child("FoodEntries");
         final ArrayList<FoodEntry> mFoodEntries = new ArrayList<>();
 
+        tvDate = view.findViewById(R.id.food_date);
+        btnNextDay = view.findViewById(R.id.btn_food_next);
+        btnPrevDay = view.findViewById(R.id.btn_food_prev);
+
         mRecyclerView = view.findViewById(R.id.rv_food);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -61,54 +76,63 @@ public class FoodFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
 
-        FoodEntry foodEntry1 = new FoodEntry();
-        foodEntry1.setCals(200);
-        foodEntry1.setCarbs(100);
-        foodEntry1.setFat(50);
-        foodEntry1.setProtein(50);
-        foodEntry1.setDesc("cheeseburger");
-        foodEntry1.setType(1);
 
-        mFoodEntries.add(foodEntry1);
-        mFoodEntries.add(foodEntry1);
-        mFoodEntries.add(foodEntry1);
-        mFoodEntries.add(foodEntry1);
 
-               //time testing
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat DbDateFormat = new SimpleDateFormat("ddMMyyyy");
+        //set current date to today
         String currentDate  = DbDateFormat.format(c.getTime());
-        c.add(Calendar.DAY_OF_YEAR, 1);
-        String tomorrowDate = DbDateFormat.format(c.getTime());
-        SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM dd, yyyy");
-        Date formatTomorrowDate = null;
-        try{
-            formatTomorrowDate = DbDateFormat.parse(tomorrowDate);
-            String finalTomorrowDate = displayDateFormat.format(formatTomorrowDate);
-            //Log.v(TAG, finalTomorrowDate);
-        }catch(ParseException e){e.printStackTrace();}
+        //set display date
+        tvDate.setText(displayDateFormat.format(c.getTime()));
 
-        //setSampleEntries(getSampleEntries(), mDbRef, currentDate);
-        //setSampleEntries(getSampleEntries(), mDbRef, tomorrowDate);
+//        c.add(Calendar.DAY_OF_YEAR, 1);
+//        final String selectedDate = DbDateFormat.format(c.getTime());
+//
+//        Date formatTomorrowDate = null;
+//        try{
+//            formatTomorrowDate = DbDateFormat.parse(selectedDate);
+//            String finalTomorrowDate = displayDateFormat.format(formatTomorrowDate);
+//            Log.v(TAG, finalTomorrowDate);
+//        }catch(ParseException e){e.printStackTrace();}
 
-        DatabaseReference mDateRef = mDbRef.child(currentDate);
+        btnPrevDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c.add(Calendar.DAY_OF_YEAR, -1);
+                selectedDate = DbDateFormat.format(c.getTime());
+                tvDate.setText(displayDateFormat.format(c.getTime()));
+                getFoodEntries(mFoodEntries, selectedDate, mDbRef);
+            }
+        });
+
+
+        btnNextDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c.add(Calendar.DAY_OF_YEAR, 1);
+                selectedDate = DbDateFormat.format(c.getTime());
+                tvDate.setText(displayDateFormat.format(c.getTime()));
+                getFoodEntries(mFoodEntries, selectedDate, mDbRef);
+            }
+        });
+
+        getFoodEntries(mFoodEntries, currentDate, mDbRef);
+        return view;
+    }
+
+
+    private void getFoodEntries(final List<FoodEntry> mFoodEntries, String selectedDate, DatabaseReference DbRef){
+
+        DatabaseReference mDateRef = DbRef.child(selectedDate);
         mDateRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mFoodEntries.clear();
                 for(DataSnapshot foodEntrySnapShot: dataSnapshot.getChildren()){
                     FoodEntry foodEntry = foodEntrySnapShot.getValue(FoodEntry.class);
                     FoodEntry tempEntry = foodEntry;
                     mFoodEntries.add(tempEntry);
-                    Log.v(TAG, foodEntry.getFoodEntryId());
-                    Log.v(TAG, foodEntry.getDesc());
-                    Log.v(TAG, String.valueOf(foodEntry.getCals()));
-                    Log.v(TAG, String.valueOf(foodEntry.getCarbs()));
-                    Log.v(TAG, String.valueOf(foodEntry.getProtein()));
-                    Log.v(TAG, String.valueOf(foodEntry.getFat()));
-                    Log.v(TAG, "size " + mFoodEntries.size());
-                    System.out.println(foodEntry);
-                    mAdapter.notifyDataSetChanged();
                 }
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -117,13 +141,7 @@ public class FoodFragment extends Fragment {
             }
         });
 
-
-
-        //Log.v(TAG, mDbRef.toString());
-        //Log.v(TAG, "today: " + currentDate + ", tomorrow: "+ tomorrowDate +", next month : "+ nextMonthDate + "next year : "+ nextYearDate);
-        return view;
     }
-
     private void setSampleEntries(List<FoodEntry> foodEntries, DatabaseReference mDbRef, String selectedDate) {
         for(FoodEntry foodEntry: foodEntries){
             String foodEntryID = mDbRef.push().getKey();
@@ -145,6 +163,23 @@ public class FoodFragment extends Fragment {
         foodEntry1.setDesc("bacon sambo");
         foodEntry1.setType(1);
 
+        FoodEntry foodEntry3 = new FoodEntry();
+        foodEntry3.setCals(200);
+        foodEntry3.setCarbs(100);
+        foodEntry3.setFat(50);
+        foodEntry3.setProtein(50);
+        foodEntry3.setDesc("tomato soup");
+        foodEntry3.setType(1);
+
+        FoodEntry foodEntry4 = new FoodEntry();
+        foodEntry4.setCals(200);
+        foodEntry4.setCarbs(100);
+        foodEntry4.setFat(50);
+        foodEntry4.setProtein(50);
+        foodEntry4.setDesc("bread");
+        foodEntry4.setType(1);
+
+
         FoodEntry foodEntry2 = new FoodEntry();
         foodEntry2.setCals(300);
         foodEntry2.setCarbs(150);
@@ -155,6 +190,8 @@ public class FoodFragment extends Fragment {
 
         foodEntries.add(foodEntry1);
         foodEntries.add(foodEntry2);
+        foodEntries.add(foodEntry3);
+        foodEntries.add(foodEntry4);
         return foodEntries;
     }
 }
