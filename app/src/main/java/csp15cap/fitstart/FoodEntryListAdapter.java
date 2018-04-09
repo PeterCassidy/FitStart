@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +58,15 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         holder.vCarbs.setText(String.valueOf(fe.getCarbs()));
         holder.vProtein.setText(String.valueOf(fe.getProtein()));
         holder.vFat.setText(String.valueOf(fe.getFat()));
+        holder.vBtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid).child("FoodEntries");
+                mDbRef.child(fe.getSaveDate()).child(fe.getFoodEntryId()).removeValue();
+
+            }
+        });
     }
 
     @Override
@@ -61,7 +74,7 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         return mFoodEntries.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView vDesc, vCals, vFat, vCarbs, vProtein;
         protected ImageView vBtnDelete;
 
@@ -73,6 +86,11 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
             vCarbs = itemView.findViewById(R.id.food_entry_carbs);
             vProtein = itemView.findViewById(R.id.food_entry_protein);
             vBtnDelete = itemView.findViewById(R.id.btn_food_entry_delete);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }

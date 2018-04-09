@@ -14,17 +14,20 @@ public class FoodEntry implements Comparable{
 
     private String foodEntryId;
     private String Desc;
+    private String saveDate;
+
     private long cals;
     private long carbs;
     private long protein;
     private long fat;
     private long type;
 
+
     //empty constructor
     public FoodEntry() {
     }
 
-    public FoodEntry(String foodEntryId, String desc, long cals, long carbs, long protein, long fat, long type) {
+    public FoodEntry(String foodEntryId, String desc, String saveDate, long cals, long carbs, long protein, long fat, long type) {
         this.foodEntryId = foodEntryId;
         Desc = desc;
         this.cals = cals;
@@ -32,7 +35,17 @@ public class FoodEntry implements Comparable{
         this.protein = protein;
         this.fat = fat;
         this.type = type;
+        this.saveDate = saveDate;
     }
+
+    public String getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(String saveDate) {
+        this.saveDate = saveDate;
+    }
+
     public long getType() {
         return type;
     }
