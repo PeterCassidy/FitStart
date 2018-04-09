@@ -36,12 +36,21 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_new_food_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Add Entry" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_food"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="59dp" />
+        android:layout_marginBottom="55dp"
+        android:layout_marginTop="55dp" />
 
 </RelativeLayout>

@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -132,6 +133,7 @@ public class FoodFragment extends Fragment {
                     FoodEntry tempEntry = foodEntry;
                     mFoodEntries.add(tempEntry);
                 }
+                Collections.sort(mFoodEntries);
                 mAdapter.notifyDataSetChanged();
             }
 

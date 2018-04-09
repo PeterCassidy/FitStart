@@ -78,15 +78,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                NavMenuSelected(item);
-                return false;
-            }
-        });
-
-
     }
 
 
@@ -140,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
+                break;
 
         }
         drawerLayout.closeDrawer(3);
@@ -153,6 +145,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                NavMenuSelected(item);
+                return false;
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         //if no user logged in sent to login activity.
