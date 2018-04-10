@@ -41,7 +41,7 @@ public class FoodFragment extends Fragment {
     private DatabaseReference mDbRef; //ref to users>uid>foodentries>
 
     private TextView tvDate;
-    private Button btnPrevDay, btnNextDay;
+    private Button btnPrevDay, btnNextDay, btnNewEntry;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -68,6 +68,7 @@ public class FoodFragment extends Fragment {
         tvDate = view.findViewById(R.id.food_date);
         btnNextDay = view.findViewById(R.id.btn_food_next);
         btnPrevDay = view.findViewById(R.id.btn_food_prev);
+        btnNewEntry = view.findViewById(R.id.btn_new_food_entry);
 
         mRecyclerView = view.findViewById(R.id.rv_food);
         mRecyclerView.setHasFixedSize(true);
@@ -80,7 +81,7 @@ public class FoodFragment extends Fragment {
 
 
         //set current date to today
-        String currentDate  = DbDateFormat.format(c.getTime());
+        selectedDate  = DbDateFormat.format(c.getTime());
         //set display date
         tvDate.setText(displayDateFormat.format(c.getTime()));
 
@@ -115,7 +116,21 @@ public class FoodFragment extends Fragment {
             }
         });
 
-        getFoodEntries(mFoodEntries, currentDate, mDbRef);
+        btnNewEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewFoodEntryFragment entryFrag = new NewFoodEntryFragment();
+                Bundle bundle = new Bundle();
+                entryFrag.setArguments(bundle);
+                bundle.putString("selectedDate", selectedDate);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, entryFrag )
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        getFoodEntries(mFoodEntries, selectedDate, mDbRef);
         return view;
     }
 
@@ -144,56 +159,5 @@ public class FoodFragment extends Fragment {
         });
 
     }
-    private void setSampleEntries(List<FoodEntry> foodEntries, DatabaseReference mDbRef, String selectedDate) {
-        for(FoodEntry foodEntry: foodEntries){
-            String foodEntryID = mDbRef.push().getKey();
-            foodEntry.setFoodEntryId(foodEntryID);
-            mDbRef.child(selectedDate).child(foodEntryID).setValue(foodEntry);
-        }
 
-
-    }
-
-    public static List<FoodEntry> getSampleEntries() {
-        //temp data list
-        List<FoodEntry> foodEntries = new ArrayList<>();
-        FoodEntry foodEntry1 = new FoodEntry();
-        foodEntry1.setCals(200);
-        foodEntry1.setCarbs(100);
-        foodEntry1.setFat(50);
-        foodEntry1.setProtein(50);
-        foodEntry1.setDesc("bacon sambo");
-        foodEntry1.setType(1);
-
-        FoodEntry foodEntry3 = new FoodEntry();
-        foodEntry3.setCals(200);
-        foodEntry3.setCarbs(100);
-        foodEntry3.setFat(50);
-        foodEntry3.setProtein(50);
-        foodEntry3.setDesc("tomato soup");
-        foodEntry3.setType(1);
-
-        FoodEntry foodEntry4 = new FoodEntry();
-        foodEntry4.setCals(200);
-        foodEntry4.setCarbs(100);
-        foodEntry4.setFat(50);
-        foodEntry4.setProtein(50);
-        foodEntry4.setDesc("bread");
-        foodEntry4.setType(1);
-
-
-        FoodEntry foodEntry2 = new FoodEntry();
-        foodEntry2.setCals(300);
-        foodEntry2.setCarbs(150);
-        foodEntry2.setFat(50);
-        foodEntry2.setProtein(100);
-        foodEntry2.setDesc("bangers and mash");
-        foodEntry2.setType(3);
-
-        foodEntries.add(foodEntry1);
-        foodEntries.add(foodEntry2);
-        foodEntries.add(foodEntry3);
-        foodEntries.add(foodEntry4);
-        return foodEntries;
-    }
 }
