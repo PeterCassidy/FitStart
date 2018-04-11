@@ -62,7 +62,7 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
             @Override
             public void onClick(View view) {
                 String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid).child("FoodEntries");
+                DatabaseReference mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
                 mDbRef.child(fe.getSaveDate()).child(fe.getFoodEntryId()).removeValue();
 
             }

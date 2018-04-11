@@ -52,7 +52,7 @@ public class NewFoodEntryFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         String currentUid = mAuth.getCurrentUser().getUid();
-        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid).child("FoodEntries");
+        mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
 
         tvTitle = view.findViewById(R.id.tv_new_food_test);
         etDesc = view.findViewById(R.id.et_new_food_desc);
@@ -66,20 +66,20 @@ public class NewFoodEntryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-                    case 1:
+                    case 0:
                         selectedType = 1;
                         break;
-                    case 2:
+                    case 1:
                         selectedType = 2;
                         break;
-                    case 3:
+                    case 2:
                         selectedType = 3;
                         break;
-                    case 4:
+                    case 3:
                         selectedType = 4;
                         break;
                     default:
-                        selectedType = 1;
+                        selectedType = 4;
                         break;
                 }
             }

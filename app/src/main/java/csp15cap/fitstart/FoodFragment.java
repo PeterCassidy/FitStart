@@ -62,7 +62,7 @@ public class FoodFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         String currentUid = mAuth.getCurrentUser().getUid();
-        mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid).child("FoodEntries");
+        mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
         final ArrayList<FoodEntry> mFoodEntries = new ArrayList<>();
 
         tvDate = view.findViewById(R.id.food_date);
