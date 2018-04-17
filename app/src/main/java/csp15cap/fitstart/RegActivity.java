@@ -91,7 +91,7 @@ public class RegActivity extends AppCompatActivity {
                                         });
                             }
                             else{
-                                Toast.makeText(RegActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegActivity.this, "Error: " +task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                             }
                         }
