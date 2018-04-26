@@ -1,17 +1,25 @@
 package csp15cap.fitstart;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -98,15 +106,29 @@ public class NewFoodEntryFragment extends Fragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow((null == getActivity().getCurrentFocus()) ? null : getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                String desc,cals,carbs,protein,fat;
+                desc = etDesc.getText().toString();
+                cals = etCals.getText().toString();
+                carbs = etCarbs.getText().toString();
+                protein = etProtein.getText().toString();
+                fat = etFat.getText().toString();
+
+                if(TextUtils.isEmpty(desc)||TextUtils.isEmpty(cals)||TextUtils.isEmpty(carbs)||TextUtils.isEmpty(protein)||TextUtils.isEmpty(fat)) {
+                    Toast.makeText(getActivity(), "Please complete all fields", Toast.LENGTH_SHORT).show();
+                }else{
                 FoodEntry foodEntry = new FoodEntry();
-                foodEntry.setDesc(etDesc.getText().toString());
-                foodEntry.setCals(Long.parseLong(etCals.getText().toString()));
-                foodEntry.setFat(Long.parseLong(etFat.getText().toString()));
-                foodEntry.setCarbs(Long.parseLong(etCarbs.getText().toString()));
-                foodEntry.setProtein(Long.parseLong(etProtein.getText().toString()));
+                foodEntry.setDesc(desc);
+                foodEntry.setCals(Long.parseLong(cals));
+                foodEntry.setFat(Long.parseLong(fat));
+                foodEntry.setCarbs(Long.parseLong(carbs));
+                foodEntry.setProtein(Long.parseLong(protein));
                 foodEntry.setSaveDate(selectedDate);
                 foodEntry.setType(selectedType);
-                saveEntry(foodEntry, mDbRef,selectedDate);
+                saveEntry(foodEntry, mDbRef, selectedDate);
+                }
             }
         });
 
@@ -118,6 +140,18 @@ public class NewFoodEntryFragment extends Fragment {
     private void saveEntry(FoodEntry foodEntry, DatabaseReference mDbRef, String selectedDate) {
         String foodEntryID = mDbRef.push().getKey();
         foodEntry.setFoodEntryId(foodEntryID);
-        mDbRef.child(selectedDate).child(foodEntryID).setValue(foodEntry);
+        mDbRef.child(selectedDate).child("Entries").child(foodEntryID).setValue(foodEntry).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getActivity(), "Entry added.", Toast.LENGTH_SHORT).show();
+                    FragmentManager fm = getFragmentManager();
+                    fm.popBackStack();
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(getActivity(), "Error: "+ error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

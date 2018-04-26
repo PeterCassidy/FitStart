@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                             else{
                                 String message = task.getException().getMessage();
                                 Toast.makeText(LoginActivity.this, "Error: "+message, Toast.LENGTH_SHORT).show();
+                                mProgressBar.cancel();
 
                             }
                         }

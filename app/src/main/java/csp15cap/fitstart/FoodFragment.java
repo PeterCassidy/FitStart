@@ -1,5 +1,7 @@
 package csp15cap.fitstart;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -40,8 +43,10 @@ public class FoodFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mDbRef; //ref to users>uid>foodentries>
 
-    private TextView tvDate;
-    private Button btnPrevDay, btnNextDay, btnNewEntry;
+    private TextView tvDate, tvTotCals, tvTotCarbs, tvTotProtein, tvTotFat;
+    private Button btnPrevDay, btnNextDay, btnNewEntry, btnLockToday;
+
+
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -69,6 +74,12 @@ public class FoodFragment extends Fragment {
         btnNextDay = view.findViewById(R.id.btn_food_next);
         btnPrevDay = view.findViewById(R.id.btn_food_prev);
         btnNewEntry = view.findViewById(R.id.btn_new_food_entry);
+        btnLockToday = view.findViewById(R.id.btn_confirm_food_today);
+
+        tvTotCals = view.findViewById(R.id.tv_today_cals);
+        tvTotCarbs = view.findViewById(R.id.tv_today_carbs);
+        tvTotProtein = view.findViewById(R.id.tv_today_protein);
+        tvTotFat = view.findViewById(R.id.tv_today_fat);
 
         mRecyclerView = view.findViewById(R.id.rv_food);
         mRecyclerView.setHasFixedSize(true);
@@ -98,8 +109,10 @@ public class FoodFragment extends Fragment {
         btnPrevDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setTotsToZero();
                 c.add(Calendar.DAY_OF_YEAR, -1);
                 selectedDate = DbDateFormat.format(c.getTime());
+                checkTodaysLock(selectedDate);
                 tvDate.setText(displayDateFormat.format(c.getTime()));
                 getFoodEntries(mFoodEntries, selectedDate, mDbRef);
             }
@@ -109,8 +122,10 @@ public class FoodFragment extends Fragment {
         btnNextDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setTotsToZero();
                 c.add(Calendar.DAY_OF_YEAR, 1);
                 selectedDate = DbDateFormat.format(c.getTime());
+                checkTodaysLock(selectedDate);
                 tvDate.setText(displayDateFormat.format(c.getTime()));
                 getFoodEntries(mFoodEntries, selectedDate, mDbRef);
             }
@@ -130,23 +145,51 @@ public class FoodFragment extends Fragment {
             }
         });
 
+        btnLockToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Confirmation")
+                        .setMessage("Are you sure you wish to confirm your food entry for today? No changes can be made after this.")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                mDbRef.child(selectedDate).child("Lock").setValue("true");
+                                Toast.makeText(getActivity(), "Meal entries locked.", Toast.LENGTH_SHORT).show();
+                            }})
+                        .setNegativeButton("Cancel", null).show();
+            }
+        });
+
+
+        checkTodaysLock(selectedDate);
+
         getFoodEntries(mFoodEntries, selectedDate, mDbRef);
         return view;
     }
 
 
     private void getFoodEntries(final List<FoodEntry> mFoodEntries, String selectedDate, DatabaseReference DbRef){
-
-        DatabaseReference mDateRef = DbRef.child(selectedDate);
+        DatabaseReference mDateRef = DbRef.child(selectedDate).child("Entries");
         mDateRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                long totCal=0,totCarb=0,totProtein=0,totFat=0;
+
                 mFoodEntries.clear();
                 for(DataSnapshot foodEntrySnapShot: dataSnapshot.getChildren()){
                     FoodEntry foodEntry = foodEntrySnapShot.getValue(FoodEntry.class);
-                    FoodEntry tempEntry = foodEntry;
-                    mFoodEntries.add(tempEntry);
+                    totCal = totCal + foodEntry.getCals();
+                    totCarb = totCarb + foodEntry.getCarbs();
+                    totProtein = totProtein + foodEntry.getProtein();
+                    totFat = totFat + foodEntry.getFat();
+                    mFoodEntries.add(foodEntry);
+                    tvTotCals.setText(String.valueOf(totCal));
+                    tvTotCarbs.setText(String.valueOf(totCarb));
+                    tvTotProtein.setText(String.valueOf(totProtein));
+                    tvTotFat.setText(String.valueOf(totFat));
+
                 }
                 Collections.sort(mFoodEntries);
                 mAdapter.notifyDataSetChanged();
@@ -159,5 +202,38 @@ public class FoodFragment extends Fragment {
         });
 
     }
+    private void setTotsToZero(){
+        tvTotCals.setText("0");
+        tvTotCarbs.setText("0");
+        tvTotProtein.setText("0");
+        tvTotFat.setText("0");
+    }
 
+    private void checkTodaysLock(String selectedDate) {
+
+        mDbRef.child(selectedDate).child("Lock").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String result;
+                    result = dataSnapshot.getValue().toString();
+                     if(result.equals("true")) {
+                         Log.v(TAG, "result :"+result);
+                        btnNewEntry.setVisibility(View.INVISIBLE);
+                    }else{//set invisible if lock not true.
+                         btnNewEntry.setVisibility(View.VISIBLE);
+                    }
+                    }else{//set invisible if lock doesnt exist
+                    btnNewEntry.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
+
+
