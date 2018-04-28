@@ -1,7 +1,10 @@
 package csp15cap.fitstart;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -13,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +51,7 @@ public class FoodFragment extends Fragment {
     private TextView tvDate, tvTotCals, tvTotCarbs, tvTotProtein, tvTotFat;
     private Button btnPrevDay, btnNextDay, btnNewEntry, btnLockToday;
 
-
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -57,6 +61,7 @@ public class FoodFragment extends Fragment {
     Calendar c = Calendar.getInstance();
     SimpleDateFormat DbDateFormat = new SimpleDateFormat("ddMMyyyy");
     SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+    SimpleDateFormat pickerFormat = new SimpleDateFormat("dd/MM/yyyy");
     String selectedDate = null;
 
     @Nullable
@@ -105,6 +110,35 @@ public class FoodFragment extends Fragment {
 //            String finalTomorrowDate = displayDateFormat.format(formatTomorrowDate);
 //            Log.v(TAG, finalTomorrowDate);
 //        }catch(ParseException e){e.printStackTrace();}
+
+        tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               int year = c.get(Calendar.YEAR);
+               int month =  c.get(Calendar.MONTH);
+               int day = c.get(Calendar.DAY_OF_MONTH);
+               DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                       android.R.style.Theme_Holo_Light_DarkActionBar, mDateSetListener, year, month,day);
+               dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+               dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
+                System.out.println(day+"/"+month+"/"+year);
+                c.set(year,month,day);
+
+                setTotsToZero();
+                selectedDate = DbDateFormat.format(c.getTime());
+                checkTodaysLock(selectedDate);
+                tvDate.setText(displayDateFormat.format(c.getTime()));
+                getFoodEntries(mFoodEntries, selectedDate, mDbRef);
+                }
+            };
+
 
         btnPrevDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,11 +253,14 @@ public class FoodFragment extends Fragment {
                     result = dataSnapshot.getValue().toString();
                      if(result.equals("true")) {
                          Log.v(TAG, "result :"+result);
+                         btnLockToday.setVisibility(View.INVISIBLE);
                         btnNewEntry.setVisibility(View.INVISIBLE);
                     }else{//set invisible if lock not true.
+                         btnLockToday.setVisibility(View.VISIBLE);
                          btnNewEntry.setVisibility(View.VISIBLE);
                     }
                     }else{//set invisible if lock doesnt exist
+                    btnLockToday.setVisibility(View.VISIBLE);
                     btnNewEntry.setVisibility(View.VISIBLE);
                 }
             }

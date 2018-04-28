@@ -11,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,8 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
+        String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
         final FoodEntry fe = mFoodEntries.get(i);
         holder.vDesc.setText(fe.getDesc());
         int entryType = (int) fe.getType();
@@ -58,11 +63,33 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         holder.vCarbs.setText(String.valueOf(fe.getCarbs()));
         holder.vProtein.setText(String.valueOf(fe.getProtein()));
         holder.vFat.setText(String.valueOf(fe.getFat()));
+
+        mDbRef.child(fe.getSaveDate()).child("Lock").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String result;
+                    result = dataSnapshot.getValue().toString();
+                    if(result.equals("true")) {
+                        holder.vBtnDelete.setVisibility(View.INVISIBLE);
+                    }else{//set invisible if lock not true.
+                        holder.vBtnDelete.setVisibility(View.VISIBLE);
+                    }
+                }else{//set invisible if lock doesnt exist
+                    holder.vBtnDelete.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         holder.vBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
+
                 mDbRef.child(fe.getSaveDate()).child("Entries").child(fe.getFoodEntryId()).removeValue();
 
             }
