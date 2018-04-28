@@ -88,4 +88,30 @@
         android:layout_centerHorizontal="true"
         android:entries="@array/food_type_array" />
 
+    <TextView
+        android:id="@+id/Or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_food_cancel"
+        android:layout_centerHorizontal="true"
+        android:text="Or" />
+
+    <EditText
+        android:id="@+id/et_fatsecret_query"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Or"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="search"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btn_fatsecret_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_fatsecret_query"
+        android:layout_centerHorizontal="true"
+        android:text="Search Database" />
+
 </RelativeLayout>

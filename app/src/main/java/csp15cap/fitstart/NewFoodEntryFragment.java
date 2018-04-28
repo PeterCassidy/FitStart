@@ -32,9 +32,9 @@ public class NewFoodEntryFragment extends Fragment {
 
 
     TextView tvTitle;
-    EditText etDesc, etCals, etCarbs, etProtein, etFat;
+    EditText etDesc, etCals, etCarbs, etProtein, etFat, etSearch;
     Spinner spType;
-    Button btnCancel, btnSave;
+    Button btnCancel, btnSave, btnSearch;
     String selectedDate = "01011999";
     long selectedType = 1;
 
@@ -99,9 +99,24 @@ public class NewFoodEntryFragment extends Fragment {
 
         });
 
+        btnCancel = view.findViewById(R.id.btn_food_cancel);
         btnSave = view.findViewById(R.id.btn_food_save);
 
+        etSearch = view.findViewById(R.id.et_fatsecret_query);
+        btnSearch = view.findViewById(R.id.btn_fatsecret_search);
+
+
         tvTitle.setText("Entry new food entry for: " + selectedDate);
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow((null == getActivity().getCurrentFocus()) ? null : getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +144,31 @@ public class NewFoodEntryFragment extends Fragment {
                 foodEntry.setType(selectedType);
                 saveEntry(foodEntry, mDbRef, selectedDate);
                 }
+            }
+        });
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow((null == getActivity().getCurrentFocus()) ? null : getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                String searchQuery = etSearch.getText().toString();
+
+                if(TextUtils.isEmpty(searchQuery)){
+                    Toast.makeText(getActivity(), "Please enter search query.", Toast.LENGTH_SHORT).show();
+                }else{
+                    FatSecretResultsFragment fatSecretFrag = new FatSecretResultsFragment();
+                    Bundle bundle = new Bundle();
+                    fatSecretFrag.setArguments(bundle);
+                    bundle.putString("query", searchQuery);
+                    bundle.putString("selectedDate", selectedDate);
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fatSecretFrag)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
             }
         });
 

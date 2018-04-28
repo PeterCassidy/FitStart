@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fatsecret.platform.model.CompactFood;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -90,7 +91,6 @@ public class FoodFragment extends Fragment {
 
 
 
-
         //set current date to today
         selectedDate  = DbDateFormat.format(c.getTime());
         //set display date
@@ -140,7 +140,7 @@ public class FoodFragment extends Fragment {
                 bundle.putString("selectedDate", selectedDate);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, entryFrag )
-                        .addToBackStack(null)
+                        .addToBackStack("diary")
                         .commit();
             }
         });
