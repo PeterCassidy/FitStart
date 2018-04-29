@@ -31,6 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -44,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView navHeaderUsername;
     private ImageView navHeaderProfileImage;
+
+    private Boolean todayChallengeExists;
+
+    Calendar c = Calendar.getInstance();
+    SimpleDateFormat DbDateFormat = new SimpleDateFormat("yyyyMMdd");
 
 
     @Override
@@ -120,6 +128,16 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Exercise selected", Toast.LENGTH_SHORT).show();
                 break;
 
+            case R.id.nav_challenge:
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                if(todayChallengeExists){
+                    fragment = new DailyChallengeSelectedFragment();
+                }else {
+                    fragment = new DailyChallengeFragment();
+                }
+                Toast.makeText(this, "Challenges selected", Toast.LENGTH_SHORT).show();
+                break;
+
             case R.id.nav_profile:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ProfileFragment();
@@ -148,6 +166,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        String selectedDate = DbDateFormat.format(c.getTime());
+
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -159,11 +181,11 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //if no user logged in sent to login activity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        String CurrentUUID = mAuth.getCurrentUser().getUid();
         if (currentUser == null) {
             sendUserToLoginActivity();
         } else {
             //temp implementation to test DB access
-            String CurrentUUID = mAuth.getCurrentUser().getUid();
             mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUUID);
             mDbRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -178,6 +200,22 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.get().load(imageURL).placeholder(R.drawable.common_google_signin_btn_icon_light).into(navHeaderProfileImage);
                     }
 
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            FirebaseDatabase.getInstance().getReference().child("DailyChallenges").child(CurrentUUID).child(selectedDate).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                    todayChallengeExists = true;
+                    }else{
+                        todayChallengeExists = false;
+                    }
                 }
 
                 @Override

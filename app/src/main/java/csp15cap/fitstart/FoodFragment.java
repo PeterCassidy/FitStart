@@ -59,7 +59,7 @@ public class FoodFragment extends Fragment {
 
     //set date formats
     Calendar c = Calendar.getInstance();
-    SimpleDateFormat DbDateFormat = new SimpleDateFormat("ddMMyyyy");
+    SimpleDateFormat DbDateFormat = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat displayDateFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat pickerFormat = new SimpleDateFormat("dd/MM/yyyy");
     String selectedDate = null;

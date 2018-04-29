@@ -35,7 +35,7 @@ public class NewFoodEntryFragment extends Fragment {
     EditText etDesc, etCals, etCarbs, etProtein, etFat, etSearch;
     Spinner spType;
     Button btnCancel, btnSave, btnSearch;
-    String selectedDate = "01011999";
+    String selectedDate = "19990101";
     long selectedType = 1;
 
 
