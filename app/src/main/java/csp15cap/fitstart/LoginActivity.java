@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private EditText userEmail, userPassword;
     private TextView regText;
+
     private FirebaseAuth mAuth;
     private ProgressDialog mProgressBar;
 
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.editTextLoginEmail);
         userPassword = findViewById(R.id.editTextLoginPassword);
         regText = findViewById(R.id.textViewSignup);
+
         mProgressBar = new ProgressDialog(LoginActivity.this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {

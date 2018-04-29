@@ -51,29 +51,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //set up toolbar
         mToolbar = findViewById(R.id.main_app_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Home");
 
+        //set up navigation drawer
         drawerLayout = findViewById(R.id.drawer_layout_main);
         actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //set nav menu header
         navigationView = findViewById(R.id.nav_view_main);
         navigationView.inflateHeaderView(R.layout.nav_header);
         View header = navigationView.getHeaderView(0);
-
-
         navHeaderUsername = header.findViewById(R.id.nav_username);
         navHeaderProfileImage = header.findViewById(R.id.nav_profile_pic);
+
         //set up fragment
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
             }
         }
-
         HomeFragment homeFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
 
