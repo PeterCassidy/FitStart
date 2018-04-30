@@ -34,8 +34,6 @@ public class FatSecretResultsFragment extends Fragment {
     private String mQuery;
     private String selectedDate;
 
-    TextView tvQuery;
-    TextView tvDate;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -64,10 +62,6 @@ public class FatSecretResultsFragment extends Fragment {
         //set action bar title
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Search Results");
 
-        tvDate = view.findViewById(R.id.tv_fs_result_date);
-        tvQuery = view.findViewById(R.id.tv_fs_result_query);
-        tvDate.setText(selectedDate);
-        tvQuery.setText(mQuery);
 
 
 
@@ -99,14 +93,6 @@ public class FatSecretResultsFragment extends Fragment {
         });
 
         req.getFoods(requestQueue,mQuery,0 );
-
-
-
-
-
-
-
-
 
 
         // Inflate the layout for this fragment
