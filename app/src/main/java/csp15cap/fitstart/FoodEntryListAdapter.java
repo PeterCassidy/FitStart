@@ -45,16 +45,16 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         int entryType = (int) fe.getType();
         switch(entryType){
             case 1:
-                holder.vDesc.setBackgroundColor(Color.RED);
+                holder.vIvFoodIcon.setImageResource(R.drawable.ic_breakfast);
                 break;
             case 2:
-                holder.vDesc.setBackgroundColor(Color.BLUE);
+                holder.vIvFoodIcon.setImageResource(R.drawable.ic_lunch);
                 break;
             case 3:
-                holder.vDesc.setBackgroundColor(Color.MAGENTA);
+                holder.vIvFoodIcon.setImageResource(R.drawable.ic_dinner);
                 break;
             case 4:
-                holder.vDesc.setBackgroundColor(Color.GRAY);
+                holder.vIvFoodIcon.setImageResource(R.drawable.ic_snack);
                 break;
             default:
                 break;
@@ -103,7 +103,7 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView vDesc, vCals, vFat, vCarbs, vProtein;
-        protected ImageView vBtnDelete;
+        protected ImageView vBtnDelete, vIvFoodIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -113,6 +113,7 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
             vCarbs = itemView.findViewById(R.id.food_entry_carbs);
             vProtein = itemView.findViewById(R.id.food_entry_protein);
             vBtnDelete = itemView.findViewById(R.id.btn_food_entry_delete);
+            vIvFoodIcon = itemView.findViewById(R.id.iv_food_icon);
         }
 
         @Override

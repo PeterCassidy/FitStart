@@ -1,12 +1,13 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     card_view:cardCornerRadius="4dp">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,62 +15,78 @@
             android:id="@+id/food_entry_desc"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
             android:gravity="center_vertical"
             android:text="Description"
-            android:textColor="@android:color/white"
-            android:textSize="14dp" />
+            android:textColor="@android:color/black"
+            android:textSize="14dp"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/food_entry_cals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/food_entry_desc"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginEnd="44dp"
             android:gravity="center_vertical"
             android:text="cals"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/food_entry_carbs"
+            card_view:layout_constraintTop_toTopOf="@+id/food_entry_carbs" />
 
         <TextView
             android:id="@+id/food_entry_carbs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/food_entry_cals"
-            android:layout_marginStart="64dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:text="carbs"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/food_entry_protein"
+            card_view:layout_constraintTop_toBottomOf="@+id/food_entry_desc" />
 
         <TextView
             android:id="@+id/food_entry_protein"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/food_entry_cals"
-            android:layout_marginStart="130dp"
+            android:layout_marginEnd="28dp"
             android:text="protein"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/food_entry_fat"
+            card_view:layout_constraintTop_toTopOf="@+id/food_entry_fat" />
 
         <TextView
             android:id="@+id/food_entry_fat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="140dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
             android:text="fat"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_food_entry_delete"
+            card_view:layout_constraintTop_toBottomOf="@+id/food_entry_desc" />
 
         <ImageView
             android:id="@+id/btn_food_entry_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/food_entry_cals"
-            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/food_entry_desc"
+            card_view:layout_constraintVertical_bias="1.0"
             card_view:srcCompat="@drawable/ic_delete_post" />
 
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_food_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="4dp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/food_entry_desc"
+            card_view:srcCompat="@drawable/ic_breakfast" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
