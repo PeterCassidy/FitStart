@@ -181,11 +181,10 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //if no user logged in sent to login activity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        String CurrentUUID = mAuth.getCurrentUser().getUid();
         if (currentUser == null) {
             sendUserToLoginActivity();
         } else {
-            //temp implementation to test DB access
+            String CurrentUUID = mAuth.getCurrentUser().getUid();
             mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUUID);
             mDbRef.addValueEventListener(new ValueEventListener() {
                 @Override

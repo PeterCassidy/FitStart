@@ -46,28 +46,24 @@ public class RegActivity extends AppCompatActivity {
                 String password= regUserPassword.getText().toString();
                 String confirmPass = regUserConfirmPassword.getText().toString();
 
-                RegisterAccount(name, email, password, confirmPass);
+                registerAccount(name, email, password, confirmPass);
             }
         });
 
 
     }
 
-    private void RegisterAccount(final String name, String email, String password, String confirmPass) {
+    private void registerAccount(final String name, String email, String password, String confirmPass) {
 
         if (TextUtils.isEmpty(name)){
             Toast.makeText(RegActivity.this, "Please enter your name.", Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.isEmpty(email)){
+        }else if (TextUtils.isEmpty(email)){
             Toast.makeText(RegActivity.this, "Please enter your Email.", Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.isEmpty(password)){
+        }else if (TextUtils.isEmpty(password)){
             Toast.makeText(RegActivity.this, "Please enter your password.", Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.isEmpty(confirmPass)){
-            Toast.makeText(RegActivity.this, "Please Confirm your password.", Toast.LENGTH_SHORT).show();
-        }
-        else if (!password.equals(confirmPass)){
+        }else if (TextUtils.isEmpty(confirmPass)){
+            Toast.makeText(RegActivity.this, "Please confirm your password.", Toast.LENGTH_SHORT).show();
+        }else if (!password.equals(confirmPass)){
             Toast.makeText(RegActivity.this, "Password and confirm password fields must match.", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -85,21 +81,20 @@ public class RegActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    SendUserToMainActivity();
+                                                    sendUserToMainActivity();
                                                 }
                                             }
                                         });
-                            }
-                            else{
+                            }else{
                                 Toast.makeText(RegActivity.this, "Error : " +task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
         }
     }
+
     //sends users to main activity
-    private void SendUserToMainActivity() {
+    private void sendUserToMainActivity() {
         Intent intent = new Intent(RegActivity.this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

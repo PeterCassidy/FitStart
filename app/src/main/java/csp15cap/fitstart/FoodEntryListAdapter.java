@@ -44,20 +44,11 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         holder.vDesc.setText(fe.getDesc());
         int entryType = (int) fe.getType();
         switch(entryType){
-            case 1:
-                holder.vIvFoodIcon.setImageResource(R.drawable.ic_breakfast);
-                break;
-            case 2:
-                holder.vIvFoodIcon.setImageResource(R.drawable.ic_lunch);
-                break;
-            case 3:
-                holder.vIvFoodIcon.setImageResource(R.drawable.ic_dinner);
-                break;
-            case 4:
-                holder.vIvFoodIcon.setImageResource(R.drawable.ic_snack);
-                break;
-            default:
-                break;
+            case 1:holder.vIvFoodIcon.setImageResource(R.drawable.ic_breakfast);break;
+            case 2:holder.vIvFoodIcon.setImageResource(R.drawable.ic_lunch);break;
+            case 3:holder.vIvFoodIcon.setImageResource(R.drawable.ic_dinner);break;
+            case 4:holder.vIvFoodIcon.setImageResource(R.drawable.ic_snack);break;
+            default:break;
         }
         holder.vCals.setText(String.valueOf(fe.getCals()));
         holder.vCarbs.setText(String.valueOf(fe.getCarbs()));
@@ -72,10 +63,10 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
                     result = dataSnapshot.getValue().toString();
                     if(result.equals("true")) {
                         holder.vBtnDelete.setVisibility(View.INVISIBLE);
-                    }else{//set invisible if lock not true.
+                    }else{//set visible if lock not true.
                         holder.vBtnDelete.setVisibility(View.VISIBLE);
                     }
-                }else{//set invisible if lock doesnt exist
+                }else{//set visible if lock doesnt exist
                     holder.vBtnDelete.setVisibility(View.VISIBLE);
                 }
             }

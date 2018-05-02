@@ -197,15 +197,13 @@ public class FatSecretAddFragment extends Fragment {
         return view;
     }
     //input format example :- "Per 1329g - Calories: 4504kcal | Fat: 144.68g | Carbs: 815.49g | Protein: 52.35g"
-    //outputs array of 4 Longs normalised to 100g, rounded and in the order of cals, carbs, protein, fat.
-
+    //outputs array of 4 Longs normalised to int serving, rounded and in the order of cals, carbs, protein, fat.
     public ArrayList<Long> extractNumbersFromDesc(String string, int serving) {
         Pattern p = Pattern.compile("(-?[0-9]+(?:[,.][0-9]+)?)");
         Matcher m = p.matcher(string);
         ArrayList<Double> doubleArray = new ArrayList<>();
         while (m.find()) {
             doubleArray.add(Double.parseDouble(m.group()));
-            System.out.println("Test"+m.group());
         }
         ArrayList<Long> longArray= new ArrayList<>();
         //cals index 1

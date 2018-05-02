@@ -100,17 +100,6 @@ public class FoodFragment extends Fragment {
         selectedDate  = DbDateFormat.format(c.getTime());
         //set display date
         tvDate.setText(displayDateFormat.format(c.getTime()));
-
-//        c.add(Calendar.DAY_OF_YEAR, 1);
-//        final String selectedDate = DbDateFormat.format(c.getTime());
-//
-//        Date formatTomorrowDate = null;
-//        try{
-//            formatTomorrowDate = DbDateFormat.parse(selectedDate);
-//            String finalTomorrowDate = displayDateFormat.format(formatTomorrowDate);
-//            Log.v(TAG, finalTomorrowDate);
-//        }catch(ParseException e){e.printStackTrace();}
-
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
