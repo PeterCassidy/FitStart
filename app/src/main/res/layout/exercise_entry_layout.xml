@@ -1,0 +1,76 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/exe_entry_desc"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:text="Description"
+            android:textColor="@android:color/black"
+            android:textSize="14dp"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/exe_entry_cals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="cals"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            card_view:layout_constraintEnd_toStartOf="@+id/textView15"
+            card_view:layout_constraintTop_toTopOf="@+id/textView15" />
+
+
+
+        <ImageView
+            android:id="@+id/btn_exe_entry_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/exe_entry_desc"
+            card_view:layout_constraintVertical_bias="1.0"
+            card_view:srcCompat="@drawable/ic_delete_post" />
+
+        <ImageView
+            android:id="@+id/iv_exe_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="4dp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/exe_entry_desc"
+            card_view:srcCompat="@drawable/ic_cardio" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="kcals burned"
+            card_view:layout_constraintBottom_toBottomOf="@+id/btn_exe_entry_delete"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_exe_entry_delete"
+            card_view:layout_constraintTop_toTopOf="@+id/btn_exe_entry_delete"
+            card_view:layout_constraintVertical_bias="0.384" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

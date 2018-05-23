@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
 
     <Button
         android:id="@+id/btn_food_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
         android:text="&lt;"
+        android:textColor="@color/colorSecondaryDark"
+        android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/food_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,8 +24,10 @@
         android:id="@+id/food_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Date"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toStartOf="@+id/btn_food_next"
         app:layout_constraintStart_toEndOf="@+id/btn_food_prev"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +36,10 @@
         android:id="@+id/btn_food_next"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
         android:text="&gt;"
+        android:textColor="@color/colorSecondaryDark"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +49,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Add Entry"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -52,6 +63,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Today's totals"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/food_date" />
@@ -62,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="Calories"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toStartOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
@@ -71,6 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="Carbs"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
 
@@ -80,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="Protein"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toStartOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
@@ -88,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorSecondary"
         app:layout_constraintEnd_toStartOf="@+id/textView14"
         app:layout_constraintTop_toTopOf="@+id/textView14" />
 
@@ -97,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorSecondary"
         app:layout_constraintEnd_toStartOf="@+id/textView13"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
@@ -106,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorSecondary"
         app:layout_constraintEnd_toStartOf="@+id/textView12"
         app:layout_constraintTop_toTopOf="@+id/textView12" />
 
@@ -115,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorSecondary"
         app:layout_constraintEnd_toStartOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
@@ -124,7 +139,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Confirm Todays"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -144,6 +161,7 @@
         android:layout_marginEnd="68dp"
         android:layout_marginTop="32dp"
         android:text="Fat"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_food_next" />
 
@@ -152,6 +170,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="kcal"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="@+id/textView5" />
 
@@ -160,6 +179,7 @@
         android:layout_width="7dp"
         android:layout_height="wrap_content"
         android:text="g"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="@+id/textView6" />
 
@@ -168,6 +188,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="g"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toTopOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="@+id/textView7" />
 
@@ -176,6 +197,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="g"
+        android:textColor="@color/colorSecondaryDark"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintEnd_toEndOf="@+id/textView8" />
 

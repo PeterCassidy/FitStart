@@ -102,7 +102,7 @@ public class DailyChallengeFragment extends Fragment {
                     nameList.add(challenge.getChallengeName());
                 }
 
-                ArrayAdapter<String> challengeNameAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, nameList);
+                ArrayAdapter<String> challengeNameAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner, nameList);
                 challengeNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spChallenge.setAdapter(challengeNameAdapter);
                 spChallenge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){

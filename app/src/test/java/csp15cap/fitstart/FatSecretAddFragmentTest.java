@@ -37,7 +37,7 @@ public class FatSecretAddFragmentTest {
         ArrayList<Long> expected = new ArrayList<>();
         int serving = 25;//serving size
         expected.add(50L);//cals
-        expected.add(56L);//carbs
+        expected.add(5L);//carbs
         expected.add(2L);//protein
         expected.add(1L);//fat
         String testString = "Per 100g - Calories: 200kcal | Fat: 4g | Carbs: 20g | Protein: 8g";

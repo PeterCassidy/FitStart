@@ -179,6 +179,7 @@ public class FoodFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 mDbRef.child(selectedDate).child("Lock").setValue("true");
                                 Toast.makeText(getActivity(), "Meal entries locked.", Toast.LENGTH_SHORT).show();
+                                mAdapter.notifyDataSetChanged();
                             }})
                         .setNegativeButton("Cancel", null).show();
             }

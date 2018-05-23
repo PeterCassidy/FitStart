@@ -92,6 +92,8 @@ public class FoodEntryListAdapter extends RecyclerView.Adapter<FoodEntryListAdap
         return mFoodEntries.size();
     }
 
+
+//Viewholder Class
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView vDesc, vCals, vFat, vCarbs, vProtein;
         protected ImageView vBtnDelete, vIvFoodIcon;

@@ -4,14 +4,6 @@ import android.support.annotation.NonNull;
 
 public class FoodEntry implements Comparable{
 
-    @Override
-    public int compareTo(@NonNull Object fe) {
-            FoodEntry compareTo = (FoodEntry) fe;
-            int thisType = (int)(getType());
-            int feType = (int) compareTo.getType();
-            return thisType-feType;
-    }
-
     private String foodEntryId;
     private String Desc;
     private String saveDate;
@@ -102,6 +94,14 @@ public class FoodEntry implements Comparable{
 
     public void setFat(long fat) {
         this.fat = fat;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object fe) {
+        FoodEntry compareTo = (FoodEntry) fe;
+        int thisType = (int)(getType());
+        int feType = (int) compareTo.getType();
+        return thisType-feType;
     }
 
 }

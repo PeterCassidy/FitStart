@@ -1,37 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/colorBackground">
+
+
+    <Button
+        android:id="@+id/btn_exe_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="&lt;"
+        android:textColor="@color/colorSecondaryDark"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/food_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/exe_date"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="66dp"
-        android:text="Exercise Fragment"
-        android:textSize="23sp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Date"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/rv_exe"
+        app:layout_constraintEnd_toStartOf="@+id/btn_exe_next"
+        app:layout_constraintStart_toEndOf="@+id/btn_exe_prev"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_home"
-        android:layout_width="wrap_content"
+        android:id="@+id/btn_exe_next"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="126dp"
-        android:text="home" />
+        android:backgroundTint="@color/colorPrimary"
+        android:text="&gt;"
+        android:textColor="@color/colorSecondaryDark"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
-        android:id="@+id/btn_food"
+        android:id="@+id/btn_new_exe_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/btn_exercise"
-        android:layout_below="@+id/btn_exercise"
-        android:layout_marginTop="26dp"
-        android:text="Food" />
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Add Entry"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Today's Calories Burned"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/food_date" />
 
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_today_cals_burned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="0"
+        android:textColor="@color/colorSecondary"
+        app:layout_constraintEnd_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/exe_date" />
+
+    <Button
+        android:id="@+id/btn_confirm_exe_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Confirm Todays"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_exe"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confirm_exe_today"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_exe_prev" />
+
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="kcal"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_today_cals_burned"
+        app:layout_constraintEnd_toStartOf="@+id/btn_exe_next"
+        app:layout_constraintTop_toTopOf="@+id/tv_today_cals_burned" />
+
+
+</android.support.constraint.ConstraintLayout>
