@@ -32,7 +32,7 @@ public class DailyChallengeSelectedFragment extends Fragment {
     private ImageView btnEx1, btnEx2, btnEx3, btnEx4;
     private Button btnComplete;
 
-    private DatabaseReference mDbRef;
+    private DatabaseReference mDbRef, mDbExperienceRef;
     private FirebaseAuth mAuth;
     public DailyChallengeSelectedFragment() {
         // Required empty public constructor
@@ -54,6 +54,7 @@ public class DailyChallengeSelectedFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         String currentUserId = mAuth.getCurrentUser().getUid();
         mDbRef = FirebaseDatabase.getInstance().getReference().child("DailyChallenges").child(currentUserId);
+        mDbExperienceRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
 
         tvChallengeName = view.findViewById(R.id.tv_challenge_name);
         tvDifficulty = view.findViewById(R.id.tv_difficulty);
@@ -138,6 +139,25 @@ public class DailyChallengeSelectedFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mDbRef.child(selectedDate).child("completed").setValue("true");
+                //update xp
+                mDbExperienceRef.child("experience").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long currentXP =0;
+                        if( !dataSnapshot.exists()){
+                            currentXP = 0;
+                        }else{
+                            currentXP = Long.valueOf(dataSnapshot.getValue().toString());
+                        }
+                        mDbExperienceRef.child("experience").setValue(currentXP+experience);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 tvExperience.setText("Challenge complete! You earned "+experience+" for today's challenge");
 
             }

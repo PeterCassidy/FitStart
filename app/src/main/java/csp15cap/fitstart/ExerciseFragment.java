@@ -40,7 +40,7 @@ public class ExerciseFragment extends Fragment {
     private static final String TAG = "ExerciseFragment";
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mDbRef;
+    private DatabaseReference mDbRef, mDbTargetRef;
 
     private TextView tvDate, tvTotCals;
     private Button btnPrevDay, btnNextDay, btnNewEntry, btnLockToday;
@@ -70,6 +70,7 @@ public class ExerciseFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         String currentUid = mAuth.getCurrentUser().getUid();
         mDbRef = FirebaseDatabase.getInstance().getReference().child("ExerciseEntries").child(currentUid);
+        mDbTargetRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid);
         final ArrayList<ExerciseEntry> mExerciseEntries = new ArrayList<>();
 
         tvDate = view.findViewById(R.id.exe_date);
@@ -160,6 +161,8 @@ public class ExerciseFragment extends Fragment {
         btnLockToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Confirmation")
                         .setMessage("Are you sure you wish to confirm your exercise entry for today? No changes can be made after this.")
@@ -167,8 +170,36 @@ public class ExerciseFragment extends Fragment {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 mDbRef.child(selectedDate).child("Lock").setValue("true");
-                                Toast.makeText(getActivity(), "Exercise entries locked.", Toast.LENGTH_SHORT).show();
                                 mAdapter.notifyDataSetChanged();
+                                //update experience
+                                mDbTargetRef.child("experience").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        long currentXP =0;
+                                        if( !dataSnapshot.exists()){
+                                            currentXP = 0;
+                                        }else{
+                                            currentXP = Long.valueOf(dataSnapshot.getValue().toString());
+                                        }
+                                        long totCals = Long.valueOf(tvTotCals.getText().toString());
+                                        long experience = 0;
+                                        if (totCals== 0) {
+                                            experience = 0;
+                                        }else{
+                                            experience = totCals/10;
+                                        }
+
+
+                                        mDbTargetRef.child("experience").setValue(currentXP+experience);
+                                        Toast.makeText(getActivity(), "Exercise entries locked, you earned " + experience + " experience today.", Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             }})
                         .setNegativeButton("Cancel", null).show();
             }

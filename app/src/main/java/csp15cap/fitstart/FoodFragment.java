@@ -46,9 +46,10 @@ public class FoodFragment extends Fragment {
     private static final String TAG = "FoodFragment";
 
     private FirebaseAuth mAuth;
-    private DatabaseReference mDbRef; //ref to users>uid>foodentries>
+    private DatabaseReference mDbRef;
+    private DatabaseReference mDbTargetRef;
 
-    private TextView tvDate, tvTotCals, tvTotCarbs, tvTotProtein, tvTotFat;
+    private TextView tvDate, tvTotCals, tvTotCarbs, tvTotProtein, tvTotFat, tvTargetCals;
     private Button btnPrevDay, btnNextDay, btnNewEntry, btnLockToday;
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -74,6 +75,7 @@ public class FoodFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         String currentUid = mAuth.getCurrentUser().getUid();
         mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
+        mDbTargetRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUid);
         final ArrayList<FoodEntry> mFoodEntries = new ArrayList<>();
 
         tvDate = view.findViewById(R.id.food_date);
@@ -86,6 +88,7 @@ public class FoodFragment extends Fragment {
         tvTotCarbs = view.findViewById(R.id.tv_today_carbs);
         tvTotProtein = view.findViewById(R.id.tv_today_protein);
         tvTotFat = view.findViewById(R.id.tv_today_fat);
+        tvTargetCals = view.findViewById(R.id.tv_target_cals);
 
         mRecyclerView = view.findViewById(R.id.rv_food);
         mRecyclerView.setHasFixedSize(true);
@@ -93,6 +96,23 @@ public class FoodFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new FoodEntryListAdapter(mFoodEntries);
         mRecyclerView.setAdapter(mAdapter);
+
+
+        mDbTargetRef.child("target_cals").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    tvTargetCals.setText("Calorie target is not set...");
+                }else{
+                    tvTargetCals.setText("Your calorie target for today is "+dataSnapshot.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 
@@ -171,25 +191,88 @@ public class FoodFragment extends Fragment {
         btnLockToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Confirmation")
-                        .setMessage("Are you sure you wish to confirm your food entry for today? No changes can be made after this.")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                mDbRef.child(selectedDate).child("Lock").setValue("true");
-                                Toast.makeText(getActivity(), "Meal entries locked.", Toast.LENGTH_SHORT).show();
-                                mAdapter.notifyDataSetChanged();
-                            }})
-                        .setNegativeButton("Cancel", null).show();
+
+                mDbTargetRef.child("target_cals").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()){
+                            Toast.makeText(getActivity(), "Your calorie target is not set, change this in your profile settings.", Toast.LENGTH_LONG).show();
+                        }else{
+                            Long targetCals = Long.valueOf(dataSnapshot.getValue().toString());
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Confirmation")
+                                    .setMessage("Are you sure you wish to confirm your food entry for today? No changes can be made after this.")
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            mDbRef.child(selectedDate).child("Lock").setValue("true");
+                                            mAdapter.notifyDataSetChanged();
+
+                                            //update experience
+                                            mDbTargetRef.child("experience").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    long currentXP =0;
+                                                    if( !dataSnapshot.exists()){
+                                                        currentXP = 0;
+                                                    }else{
+                                                        currentXP = Long.valueOf(dataSnapshot.getValue().toString());
+                                                    }
+                                                    long totCals = Long.valueOf(tvTotCals.getText().toString());
+                                                    long experience = calcExperienceFromCals(targetCals, totCals);
+
+
+                                                    mDbTargetRef.child("experience").setValue(currentXP+experience);
+                                                    Toast.makeText(getActivity(), "Meal entries locked, you earned " + experience + " experience today.", Toast.LENGTH_LONG).show();
+
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }})
+                                    .setNegativeButton("Cancel", null).show();
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+
             }
         });
+
+
 
 
         checkTodaysLock(selectedDate);
 
         getFoodEntries(mFoodEntries, selectedDate, mDbRef);
         return view;
+    }
+
+    private long calcExperienceFromCals(long targetCals, long totCals) {
+        long difference = Math.abs(targetCals - totCals);
+        long fivePercent = targetCals/20;
+        long tenPercent = targetCals/10;
+        if (difference>tenPercent){
+            return 0;
+        }else if(difference>fivePercent){
+            return 50;
+        }else{
+            return 100;
+        }
+
+
     }
 
 

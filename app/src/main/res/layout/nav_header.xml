@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/nav_profile_pic"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
@@ -26,4 +26,20 @@
         android:text="UserName"
         android:textAlignment="center"
         android:textColor="@color/colorSecondaryDark" />
+
+    <TextView
+        android:id="@+id/nav_xp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="experience" />
+
+    <TextView
+        android:id="@+id/nav_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/nav_profile_pic"
+        android:text="level" />
 </RelativeLayout>

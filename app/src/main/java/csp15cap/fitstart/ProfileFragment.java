@@ -35,13 +35,9 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ProfileFragment extends Fragment {
 
-    private EditText editTextUsername, editTextCurrentWeight;
+    private EditText editTextUsername, editTextCurrentWeight, editTextTargetCals;
     private ImageView imageViewProfilePic;
     private Button btnSaveChanges;
     private FirebaseAuth mAuth;
@@ -63,6 +59,7 @@ public class ProfileFragment extends Fragment {
 
         editTextUsername = view.findViewById(R.id.edittext_settings_name);
         editTextCurrentWeight = view.findViewById(R.id.edittext_settings_current_weight);
+        editTextTargetCals = view.findViewById(R.id.edittext_settings_calorie_daily);
         btnSaveChanges = view.findViewById(R.id.btn_settings_save);
         imageViewProfilePic = view.findViewById(R.id.imageview_settings_profile_pic);
 
@@ -87,6 +84,10 @@ public class ProfileFragment extends Fragment {
                         String weight = dataSnapshot.child("weight").getValue().toString();
                         editTextCurrentWeight.setText(weight);
                     }
+                    if (dataSnapshot.child("target_cals").exists()) {
+                        String cals = dataSnapshot.child("target_cals").getValue().toString();
+                        editTextTargetCals.setText(cals);
+                    }
                     if(dataSnapshot.child("profile_image").exists()){
                         String url = dataSnapshot.child("profile_image").getValue().toString();
                         Picasso.get().load(url).placeholder(R.drawable.common_google_signin_btn_icon_light).into(imageViewProfilePic);
@@ -105,10 +106,11 @@ public class ProfileFragment extends Fragment {
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name, weight;
+                String name, weight, cals;
                 name = editTextUsername.getText().toString();
                 weight = editTextCurrentWeight.getText().toString();
-                SaveChanges(name,weight);
+                cals = editTextTargetCals.getText().toString();
+                SaveChanges(name,weight,cals);
             }
         });
 
@@ -176,18 +178,21 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void SaveChanges(final String name, String weight) {
+    private void SaveChanges(final String name, String weight,String cals) {
 
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(), "Please enter your name.", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(weight)) {
             Toast.makeText(getActivity(), "Please enter your weight.", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(cals)) {
+            Toast.makeText(getActivity(), "Please enter your daily target calories.", Toast.LENGTH_SHORT).show();
         } else {
 
             //get unique id and assign user name
             String currentUUID = mAuth.getCurrentUser().getUid();
             mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUUID);
             mDbRef.child("user_name").setValue(name);
+            mDbRef.child("target_cals").setValue(cals);
             mDbRef.child("weight").setValue(weight)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

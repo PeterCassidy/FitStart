@@ -76,6 +76,7 @@ public class RegActivity extends AppCompatActivity {
                                 //get unique id and assign user name
                                 String currentUUID = mAuth.getCurrentUser().getUid();
                                 mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUUID);
+                                mDbRef.child("experience").setValue(0);
                                 mDbRef.child("user_name").setValue(name)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override

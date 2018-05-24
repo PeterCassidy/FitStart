@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
-    private TextView navHeaderUsername;
+    private TextView navHeaderUsername, navHeaderXp, navHeaderLevel;
     private ImageView navHeaderProfileImage;
 
     private Boolean todayChallengeExists;
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         navigationView.inflateHeaderView(R.layout.nav_header);
         View header = navigationView.getHeaderView(0);
         navHeaderUsername = header.findViewById(R.id.nav_username);
+        navHeaderXp = header.findViewById(R.id.nav_xp);
+        navHeaderLevel = header.findViewById(R.id.nav_level);
         navHeaderProfileImage = header.findViewById(R.id.nav_profile_pic);
 
         //set up fragment
@@ -192,10 +194,16 @@ public class MainActivity extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         String name = dataSnapshot.child("user_name").getValue().toString();
                         String imageURL = "placeholder";
+                        String experience = "0";
                         if(dataSnapshot.child("profile_image").exists()) {
                              imageURL = dataSnapshot.child("profile_image").getValue().toString();
                         }
+                        if(dataSnapshot.child("experience").exists()){
+                            experience = dataSnapshot.child("experience").getValue().toString();
+                        }
                         navHeaderUsername.setText(name);
+                        navHeaderXp.setText(experience);
+                        navHeaderLevel.setText(String.valueOf(getLevelFromExperience(Long.valueOf(experience))));
                         Picasso.get().load(imageURL).placeholder(R.drawable.common_google_signin_btn_icon_light).into(navHeaderProfileImage);
                     }
 
@@ -236,6 +244,19 @@ public class MainActivity extends AppCompatActivity {
     private void LogUserOut() {
         mAuth.signOut();
         sendUserToLoginActivity();
+    }
+
+    private int getLevelFromExperience(long exp){
+        if(exp<=99){return 1;}
+        else if(exp<=299){return 2;}
+        else if(exp<=599){return 3;}
+        else if(exp<=999){return 4;}
+        else if(exp<=1499){return 5;}
+        else if(exp<=2099){return 6;}
+        else if(exp<=2799){return 7;}
+        else if(exp<=3599){return 8;}
+        else if(exp<=4499){return 9;}
+        else{return 10;}
     }
 
     @Override
