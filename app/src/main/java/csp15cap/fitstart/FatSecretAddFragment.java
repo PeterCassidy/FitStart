@@ -56,8 +56,6 @@ public class FatSecretAddFragment extends Fragment {
     private int selectedType;
     private Food selectedFood = new Food();
 
-    TextView tventryID;
-    TextView tvDate;
 
     EditText etServingSize, etDesc;
     Button btnUpdate, btnConfirm, btnCancel;
@@ -82,8 +80,6 @@ public class FatSecretAddFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fat_secret_add, container, false);
 
-        tventryID = view.findViewById(R.id.tv_add_fs_entryid);
-        tvDate = view.findViewById(R.id.tv_add_fs_date);
 
         mAuth = FirebaseAuth.getInstance();
         String currentUid = mAuth.getCurrentUser().getUid();
@@ -179,9 +175,6 @@ public class FatSecretAddFragment extends Fragment {
                 }
             }
         });
-
-        tventryID.setText(mEntryName);
-        tvDate.setText(selectedDate);
 
 
 

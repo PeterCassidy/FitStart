@@ -29,6 +29,11 @@
         android:icon="@drawable/ic_contacts"
         android:title="Friends" />
 
+    <item
+        android:id="@+id/nav_find_friends"
+        android:icon="@drawable/ic_contacts"
+        android:title="Find Friends" />
+
     </group>
     <group
         android:id="@+id/menu_bottom">

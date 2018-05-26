@@ -109,25 +109,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_home:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new HomeFragment();
-                Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_friends:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FriendsFragment();
-                Toast.makeText(this, "Friends selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_find_friends:
+                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragment = new FindFriendFragment();
                 break;
 
             case R.id.nav_meals:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FoodFragment();
-                Toast.makeText(this, "Meals selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_exercise:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ExerciseFragment();
-                Toast.makeText(this, "Exercise selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_challenge:
@@ -137,13 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     fragment = new DailyChallengeFragment();
                 }
-                Toast.makeText(this, "Challenges selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_profile:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new ProfileFragment();
-                Toast.makeText(this, "Profile Settings selected", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_logout:
@@ -204,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                         navHeaderUsername.setText(name);
                         navHeaderXp.setText(experience);
                         navHeaderLevel.setText(String.valueOf(getLevelFromExperience(Long.valueOf(experience))));
-                        Picasso.get().load(imageURL).placeholder(R.drawable.common_google_signin_btn_icon_light).into(navHeaderProfileImage);
+                        Picasso.get().load(imageURL).placeholder(R.drawable.no_profile).into(navHeaderProfileImage);
                     }
 
                 }

@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 public class NewFoodEntryFragment extends Fragment {
 
@@ -31,10 +34,11 @@ public class NewFoodEntryFragment extends Fragment {
     DatabaseReference mDbRef;
 
 
-    TextView tvTitle;
+
     EditText etDesc, etCals, etCarbs, etProtein, etFat, etSearch;
     Spinner spType;
     Button btnCancel, btnSave, btnSearch;
+
     String selectedDate = "19990101";
     long selectedType = 1;
 
@@ -62,7 +66,6 @@ public class NewFoodEntryFragment extends Fragment {
         String currentUid = mAuth.getCurrentUser().getUid();
         mDbRef = FirebaseDatabase.getInstance().getReference().child("FoodEntries").child(currentUid);
 
-        tvTitle = view.findViewById(R.id.tv_new_food_test);
         etDesc = view.findViewById(R.id.et_new_food_desc);
         etCals = view.findViewById(R.id.et_new_food_cals);
         etCarbs = view.findViewById(R.id.et_new_food_carbs);
@@ -104,10 +107,6 @@ public class NewFoodEntryFragment extends Fragment {
 
         etSearch = view.findViewById(R.id.et_fatsecret_query);
         btnSearch = view.findViewById(R.id.btn_fatsecret_search);
-
-
-        tvTitle.setText("Entry new food entry for: " + selectedDate);
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
