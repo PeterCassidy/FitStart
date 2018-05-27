@@ -1,13 +1,13 @@
 package csp15cap.fitstart;
 
-public class FindFriendEntry {
+public class LeaderboardEntry {
 
     private String UniqueId;
     private String name;
     private String profilePicUrl;
 
     //empty constructor
-    public FindFriendEntry(){}
+    public LeaderboardEntry(){}
 
     public String getUniqueId() {
         return UniqueId;

@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class FindFriendFragment extends Fragment {
+public class LeaderboardFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDbRef;
@@ -34,7 +34,7 @@ public class FindFriendFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
 
-    public FindFriendFragment() {
+    public LeaderboardFragment() {
         // Required empty public constructor
     }
 
@@ -43,18 +43,18 @@ public class FindFriendFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_find_friend, container, false);
+        View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
         //set action bar title
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Find Friends");
 
-        final ArrayList<FindFriendEntry> resultsArray = new ArrayList<>();
+        final ArrayList<LeaderboardEntry> resultsArray = new ArrayList<>();
         btnSearch = view.findViewById(R.id.btn_friend_search);
         etSearch = view.findViewById(R.id.et_friend_query);
         mRecyclerView = view.findViewById(R.id.rv_find_friends);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new FindFriendListAdapter(resultsArray);
+        mAdapter = new LeaderboardListAdapter(resultsArray);
         mRecyclerView.setAdapter(mAdapter);
 
         mAuth = FirebaseAuth.getInstance();
@@ -72,7 +72,7 @@ public class FindFriendFragment extends Fragment {
                         if(dataSnapshot.exists()){
                             resultsArray.clear();
                             for (DataSnapshot friendSnapshot : dataSnapshot.getChildren()){
-                                FindFriendEntry ffe = new FindFriendEntry();
+                                LeaderboardEntry ffe = new LeaderboardEntry();
 
                                System.out.println(friendSnapshot.getKey());
                                ffe.setUniqueId(friendSnapshot.getKey());

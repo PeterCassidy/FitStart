@@ -199,44 +199,49 @@ public class FoodFragment extends Fragment {
                             Toast.makeText(getActivity(), "Your calorie target is not set, change this in your profile settings.", Toast.LENGTH_LONG).show();
                         }else{
                             Long targetCals = Long.valueOf(dataSnapshot.getValue().toString());
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle("Confirmation")
-                                    .setMessage("Are you sure you wish to confirm your food entry for today? No changes can be made after this.")
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            mDbRef.child(selectedDate).child("Lock").setValue("true");
-                                            mAdapter.notifyDataSetChanged();
 
-                                            //update experience
-                                            mDbTargetRef.child("experience").addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    long currentXP =0;
-                                                    if( !dataSnapshot.exists()){
-                                                        currentXP = 0;
-                                                    }else{
-                                                        currentXP = Long.valueOf(dataSnapshot.getValue().toString());
+                            if(targetCals >=0){
+                                Toast.makeText(getActivity(), "Your calorie target is set to 0, change this in your profile settings.", Toast.LENGTH_LONG).show();
+                            }else {
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("Confirmation")
+                                        .setMessage("Are you sure you wish to confirm your food entry for today? No changes can be made after this.")
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                mDbRef.child(selectedDate).child("Lock").setValue("true");
+                                                mAdapter.notifyDataSetChanged();
+
+                                                //update experience
+                                                mDbTargetRef.child("experience").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        long currentXP = 0;
+                                                        if (!dataSnapshot.exists()) {
+                                                            currentXP = 0;
+                                                        } else {
+                                                            currentXP = Long.valueOf(dataSnapshot.getValue().toString());
+                                                        }
+                                                        long totCals = Long.valueOf(tvTotCals.getText().toString());
+                                                        long experience = calcExperienceFromCals(targetCals, totCals);
+
+
+                                                        mDbTargetRef.child("experience").setValue(currentXP + experience);
+                                                        Toast.makeText(getActivity(), "Meal entries locked, you earned " + experience + " experience today.", Toast.LENGTH_LONG).show();
+
                                                     }
-                                                    long totCals = Long.valueOf(tvTotCals.getText().toString());
-                                                    long experience = calcExperienceFromCals(targetCals, totCals);
 
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
 
-                                                    mDbTargetRef.child("experience").setValue(currentXP+experience);
-                                                    Toast.makeText(getActivity(), "Meal entries locked, you earned " + experience + " experience today.", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
 
-                                                }
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", null).show();
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-
-                                                }
-                                            });
-
-                                        }})
-                                    .setNegativeButton("Cancel", null).show();
-
-
+                            }
                         }
                     }
 

@@ -1,12 +1,10 @@
 package csp15cap.fitstart;
 
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
@@ -116,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new FriendsFragment();
                 break;
 
-            case R.id.nav_find_friends:
+            case R.id.nav_friends_leaderboard:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragment = new FindFriendFragment();
+                fragment = new LeaderboardFragment();
                 break;
 
             case R.id.nav_meals:

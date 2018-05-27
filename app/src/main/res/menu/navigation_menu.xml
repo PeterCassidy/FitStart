@@ -21,18 +21,13 @@
 
     <item
         android:id="@+id/nav_challenge"
-        android:icon="@drawable/ic_run"
+        android:icon="@drawable/ic_cardio"
         android:title="Daily Exercise Challenge" />
 
     <item
-        android:id="@+id/nav_friends"
-        android:icon="@drawable/ic_contacts"
-        android:title="Friends" />
-
-    <item
-        android:id="@+id/nav_find_friends"
-        android:icon="@drawable/ic_contacts"
-        android:title="Find Friends" />
+        android:id="@+id/nav_friends_leaderboard"
+        android:icon="@drawable/ic_trophy"
+        android:title="Leaderboard" />
 
     </group>
     <group
