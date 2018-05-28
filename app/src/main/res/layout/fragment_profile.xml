@@ -13,10 +13,10 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_light"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/no_profile" />
 
     <EditText
         android:id="@+id/edittext_settings_name"
@@ -30,78 +30,70 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageview_settings_profile_pic" />
 
-    <EditText
-        android:id="@+id/edittext_settings_current_weight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="weight in lb"
-        android:inputType="number"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/edittext_settings_name"
-        app:layout_constraintStart_toStartOf="@+id/edittext_settings_name"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_settings_name" />
 
     <EditText
         android:id="@+id/edittext_settings_calorie_daily"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Cals in kcal"
         android:inputType="number"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/edittext_settings_current_weight"
-        app:layout_constraintStart_toStartOf="@+id/edittext_settings_current_weight"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_settings_current_weight" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_settings_name" />
 
     <Button
         android:id="@+id/btn_settings_save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Save Changes"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_settings_calorie_daily" />
 
-    <TextView
-        android:id="@+id/textview1"
-        android:layout_width="68dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="12dp"
-        android:text="Target Weight"
-        app:layout_constraintTop_toTopOf="@+id/edittext_settings_current_weight"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_week_of"
         android:layout_width="68dp"
         android:layout_height="39dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
         android:text="Target Daily Cals"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/edittext_settings_calorie_daily"
+        app:layout_constraintEnd_toStartOf="@+id/edittext_settings_calorie_daily"
         app:layout_constraintTop_toTopOf="@+id/edittext_settings_calorie_daily" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Username"
-        app:layout_constraintStart_toStartOf="@+id/textview1"
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/edittext_settings_calorie_daily"
+        app:layout_constraintEnd_toStartOf="@+id/edittext_settings_name"
         app:layout_constraintTop_toTopOf="@+id/edittext_settings_name" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="89dp"
         android:layout_height="46dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="78dp"
         android:text="Update Profile photo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textview1" />
+        android:textColor="@color/colorSecondaryDark"
+        app:layout_constraintEnd_toStartOf="@+id/imageview_settings_profile_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class FindFriendFragment extends Fragment {
@@ -26,8 +27,6 @@ public class FindFriendFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mDbRef;
 
-    private EditText etSearch;
-    private Button btnSearch;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -45,11 +44,9 @@ public class FindFriendFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_find_friend, container, false);
         //set action bar title
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Find Friends");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Leaderboard");
 
         final ArrayList<FindFriendEntry> resultsArray = new ArrayList<>();
-        btnSearch = view.findViewById(R.id.btn_friend_search);
-        etSearch = view.findViewById(R.id.et_friend_query);
         mRecyclerView = view.findViewById(R.id.rv_find_friends);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -63,35 +60,36 @@ public class FindFriendFragment extends Fragment {
 
 
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        mDbRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                mDbRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
-                            resultsArray.clear();
-                            for (DataSnapshot friendSnapshot : dataSnapshot.getChildren()){
-                                FindFriendEntry ffe = new FindFriendEntry();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    resultsArray.clear();
+                    for (DataSnapshot friendSnapshot : dataSnapshot.getChildren()){
+                        FindFriendEntry ffe = new FindFriendEntry();
 
-                               System.out.println(friendSnapshot.getKey());
-                               ffe.setUniqueId(friendSnapshot.getKey());
-                               ffe.setName(friendSnapshot.child("user_name").getValue().toString());
-                               if(friendSnapshot.child("profile_image").exists()) {
-                               ffe.setProfilePicUrl(friendSnapshot.child("profile_image").getValue().toString());
-                               }
-
-                                resultsArray.add(ffe);
-                            }
-                        mAdapter.notifyDataSetChanged();
+                        System.out.println(friendSnapshot.getKey());
+                        ffe.setUniqueId(friendSnapshot.getKey());
+                        ffe.setName(friendSnapshot.child("user_name").getValue().toString());
+                        if(friendSnapshot.child("profile_image").exists()) {
+                            ffe.setProfilePicUrl(friendSnapshot.child("profile_image").getValue().toString());
                         }
-                    }
+                        if(friendSnapshot.child("experience").exists()){
+                            ffe.setExp(Long.valueOf(friendSnapshot.child("experience").getValue().toString()));
+                        }else{
+                            ffe.setExp(0);
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
+                        resultsArray.add(ffe);
                     }
-                });
+                    Collections.sort(resultsArray);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

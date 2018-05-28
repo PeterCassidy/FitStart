@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_header_layout"
     android:layout_width="match_parent"
-    android:layout_height="225dp"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark">
 
     <ImageView
@@ -20,12 +20,13 @@
 
     <TextView
         android:id="@+id/nav_username"
-        android:layout_width="135dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="UserName"
         android:textAlignment="center"
         android:textColor="@color/colorSecondaryDark"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_profile_pic" />
@@ -34,8 +35,10 @@
         android:id="@+id/nav_xp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="experience"
         android:textColor="@color/colorSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/nav_username"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

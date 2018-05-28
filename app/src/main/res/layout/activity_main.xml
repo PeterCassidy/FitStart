@@ -36,7 +36,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
-        app:menu="@menu/navigation_menu">
+        app:menu="@menu/navigation_menu"
+        app:itemIconTint="@color/colorSecondaryDark"
+        app:itemTextColor="@color/colorSecondaryDark"
+        app:itemBackground="@color/colorBackground">
 
     </android.support.design.widget.NavigationView>
 

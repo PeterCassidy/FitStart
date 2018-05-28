@@ -1,10 +1,13 @@
 package csp15cap.fitstart;
 
-public class FindFriendEntry {
+import android.support.annotation.NonNull;
+
+public class FindFriendEntry implements Comparable {
 
     private String UniqueId;
     private String name;
     private String profilePicUrl;
+    private long exp;
 
     //empty constructor
     public FindFriendEntry(){}
@@ -31,5 +34,22 @@ public class FindFriendEntry {
 
     public void setProfilePicUrl(String profilePicUrl) {
         this.profilePicUrl = profilePicUrl;
+    }
+
+    public long getExp() {
+        return exp;
+    }
+
+    public void setExp(long exp) {
+        this.exp = exp;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object ffe) {
+        FindFriendEntry compareTo  = (FindFriendEntry) ffe;
+        int thisExp = (int)(getExp());
+        int ffeExp = (int) compareTo.getExp();
+        return ffeExp - thisExp;
+
     }
 }

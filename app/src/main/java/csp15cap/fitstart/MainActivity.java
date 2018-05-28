@@ -86,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
-        HomeFragment homeFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
+
 
 
     }
@@ -111,12 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 break;
 
-            case R.id.nav_friends:
-                getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragment = new FriendsFragment();
-                break;
 
-            case R.id.nav_find_friends:
+            case R.id.nav_leaderboard:
                 getSupportFragmentManager().popBackStack("Home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new FindFriendFragment();
                 break;
@@ -185,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
             sendUserToLoginActivity();
         } else {
+            HomeFragment homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
             String CurrentUUID = mAuth.getCurrentUser().getUid();
             mDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(CurrentUUID);
             mDbRef.addValueEventListener(new ValueEventListener() {
